@@ -55,6 +55,7 @@ function getRecommendations() {
             </div>
             `
             recommendationsContainer.innerHTML += card;
+            searchInput.value = '';
         })
         
     } else if (isTempleKeyword) {
@@ -71,6 +72,7 @@ function getRecommendations() {
             </div>
             `
             recommendationsContainer.innerHTML += card;
+            searchInput.value = '';
         })
     } else if (isCountrieKeyword) {
         
@@ -87,10 +89,12 @@ function getRecommendations() {
             </div>
             `;
             recommendationsContainer.innerHTML += cityCard;
+            searchInput.value = '';
         }
     
     } else {
         console.log('No results available');
+        searchInput.value = '';
     }
 }
 
