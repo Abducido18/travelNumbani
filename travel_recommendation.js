@@ -2,7 +2,8 @@ const url = 'travel_recommendation_api.json';
 const bookNowBtn = document.querySelector('.js-booknow-btn');
 const searchInput = document.querySelector('.js-search-input');
 const searchBtn = document.querySelector('.js-search-button');
-const recommendationsContainer = document.querySelector('.js-recommendations-container')
+const recommendationsContainer = document.querySelector('.js-recommendations-container');
+const clearBtn = document.querySelector('.js-clear-button');
 
 const beachKeywords = [
     'beach', 'beaches', 'beahcs', 'beeaches', 'beeaach'
@@ -23,13 +24,11 @@ fetch(url)
     })
     .catch(error => console.log('Error', error));
 
-bookNowBtn.addEventListener('click', () => {
 
-})
 
 function getRecommendations() {
     let keyword = searchInput.value.trim();
-
+    clear();
     
     if(!keyword) {
         console.log('Ingresa un dato válido');
@@ -46,9 +45,14 @@ function getRecommendations() {
         console.log(travelData.beaches);
         travelData.beaches.forEach(item => {
             const card = 
-            `<h1>${item.name}</h1>
-             <img src="${item.imageUrl}" alt="Descripción de la imagen">
-             <p>${item.description}</p>
+            `   
+            <div class="card">
+                <img src="${item.imageUrl}" alt="preview img"/>
+                <div class="card-body">
+                    <h2 class="card-title">${item.name}</h2>  
+                    <p class="card-text">${item.description}</p>
+                </div>
+            </div>
             `
             recommendationsContainer.innerHTML += card;
         })
@@ -57,29 +61,44 @@ function getRecommendations() {
         console.log(travelData.temples);
         travelData.temples.forEach(item => {
             const card = 
-            `<h1>${item.name}</h1>
-             <img src="${item.imageUrl}" alt="Descripción de la imagen">
-             <p>${item.description}</p>
+            `   
+            <div class="card">
+                <img src="${item.imageUrl}" alt="preview img"/>
+                <div class="card-body">
+                    <h2 class="card-title">${item.name}</h2>  
+                    <p class="card-text">${item.description}</p>
+                </div>
+            </div>
             `
             recommendationsContainer.innerHTML += card;
         })
-    } else if(isCountrieKeyword) {
-        console.log(travelData.countries);
-        travelData.countries.forEach(item => {
-            const card = 
-            `<h1>${item.name}</h1>`
-
+    } else if (isCountrieKeyword) {
+        
+        for (let i = 0; i < 2; i++) {
+            const card = `<h1>${travelData.countries[i].cities[i].name}</h1>`;
             recommendationsContainer.innerHTML += card;
-            item.cities.forEach(item => {
-                const cityCard = `
-                <img src="${item.imageUrl}" alt="Descripción de la imagen">
-                <p>${item.description}</p>`
-                recommendationsContainer.innerHTML += cityCard;
-            })    
-        })
+            const cityCard = `
+            <div class="card">
+                <img src="${travelData.countries[i].cities[i].imageUrl}" alt="preview img"/>
+                <div class="card-body">
+                    <h2 class="card-title">${travelData.countries[i].cities[i].name}</h2>
+                    <p class="card-text">${travelData.countries[i].cities[i].description}</p>
+                </div>
+            </div>
+            `;
+            recommendationsContainer.innerHTML += cityCard;
+        }
+    
     } else {
         console.log('No results available');
     }
 }
 
+function clear() {
+    recommendationsContainer.innerHTML = ''
+}
+
+
+clearBtn.addEventListener('click', clear);
 searchBtn.addEventListener('click', getRecommendations);
+
